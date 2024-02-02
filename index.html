@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consulta Reservas</title>
+  </head>
+  <body>
+    <button onclick="obtenerReservas()">Ver Reservas</button>
+
+    <script>
+      async function obtenerReservas() {
+        try {
+          const respuesta = await fetch("http://localhost:3000/graphql", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              query: `
+                  query {
+                    obtenerTodasLasReservas {
+                      id
+                      numeroDePersonas
+                      nombreCliente
+                      estado
+                    }
+                  }
+                `,
+            }),
+          });
+
+          const datosRespuesta = await respuesta.json();
+          console.log("Datos de la respuesta:", datosRespuesta); // Agrega este log para depurar
+
+          const { data } = datosRespuesta;
+          if (!data) {
+            console.error("No hay campo de datos en la respuesta:", datosRespuesta);
+            return;
+          }
+
+          const reservas = data.obtenerTodasLasReservas;
+          if (!reservas) {
+            console.error("No hay campo obtenerTodasLasReservas en los datos:", data);
+            return;
+          }
+
+          console.log("Reservas:", reservas);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+type Restaurante {
+  id: ID!
+  nombre: String!
+  horasDeApertura: String!
+}
+
+type Mesa {
+  id: ID!
+  numero: Int!
+  capacidad: Int!
+  estado: String!
+}
+
+type Reserva {
+  id: ID!
+  numeroDePersonas: Int!
+  mesa: Mesa!
+  nombreCliente: String!
+  estado: String!
+}
+
+type Query {
+  obtenerHorasDeApertura: String!
+  obtenerMesasDisponibles: [Mesa!]!
+  obtenerTodasLasReservas: [Reserva!]!
+}
+
+type Mutation {
+  crearMesa(numero: Int!, capacidad: Int!): Mesa!
+  crearReserva(
+    numeroDePersonas: Int!
+    idMesa: ID!
+    nombreCliente: String!
+  ): Reserva!
+}
